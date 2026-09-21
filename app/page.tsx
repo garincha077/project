@@ -119,7 +119,7 @@ export default function Page() {
         <section className="how-section" id="how"><div className="section-heading compact"><div><span className="section-kicker">Просто и понятно</span><h2>Как это работает</h2></div></div><div className="steps"><div className="step"><span>01</span><div><h3>Сообщите о проблеме</h3><p>Опишите ситуацию, укажите адрес и добавьте фото.</p></div></div><div className="step"><span>02</span><div><h3>Мы передадим обращение</h3><p>Информация поступит в нужную городскую службу.</p></div></div><div className="step"><span>03</span><div><h3>Город станет лучше</h3><p>Специалисты рассмотрят обращение и примут меры.</p></div></div></div></section>
         <section className="trust-strip" id="about"><div><ShieldCheck size={21} /><strong>Открытый городской сервис</strong><span>Сообщения помогают находить и устранять проблемы в Караганде.</span></div><div className="trust-contact" id="contacts"><CircleHelp size={20} /><a href="mailto:help@karaganda.kz">Есть вопрос? Напишите нам</a></div></section>
       </main>
-      <footer><span>© 2026 Проблемы Караганды</span><span>Сделано для города</span></footer>
+      <footer><span>© 2026 Открытый городской сервис</span><span>Сделано для Караганды</span></footer>
     </div>
   )
 }
