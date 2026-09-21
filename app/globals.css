@@ -181,8 +181,12 @@
     @apply flex-shrink-0;
   }
 
-  .brand-mark {
-    @apply flex items-center justify-center w-7 h-7 rounded-lg bg-blue-600 text-white;
+  .brand-logo {
+    @apply w-9 h-9 rounded-full object-cover;
+  }
+
+  .brand span {
+    @apply max-w-[190px] leading-tight;
   }
 
   .brand b {

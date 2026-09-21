@@ -3,7 +3,7 @@ import type { Metadata, Viewport } from 'next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Проблемы Караганды — сообщить о городской проблеме',
+  title: 'Открытый городской сервис — обращения Караганды',
   description: 'Сообщите о пожаре, неисправном светофоре, яме на дороге или другой проблеме в Караганде.',
   generator: 'v0.app',
   icons: {

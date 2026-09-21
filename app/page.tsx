@@ -66,9 +66,9 @@ export default function Page() {
     <div className="site-shell">
       <header className="topbar">
         <div className="topbar-inner">
-          <a href="#top" className="brand" aria-label="Проблемы Караганды — на главную">
-            <span className="brand-mark"><MapPin size={19} strokeWidth={2.5} /></span>
-            <span>Проблемы <b>Караганды</b></span>
+          <a href="#top" className="brand" aria-label="Открытый городской сервис — на главную">
+            <img className="brand-logo" src="/open-city-service-logo.png" alt="Открытый городской сервис" />
+            <span>Открытый <b>городской сервис</b></span>
           </a>
           <nav className={menuOpen ? 'nav-links is-open' : 'nav-links'} aria-label="Основная навигация">
             <a href="#how">Как это работает</a>
