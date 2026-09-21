@@ -120,7 +120,10 @@
   }
 
   .hero {
-    @apply relative bg-gradient-to-br from-blue-50 via-blue-100/50 to-white px-4 py-16 md:py-24 overflow-hidden;
+    @apply relative px-4 py-16 md:py-24 overflow-hidden;
+    background-image: linear-gradient(rgba(7, 28, 58, 0.78), rgba(7, 28, 58, 0.78)), url('https://img.press.kz/press-photobank/media/2024-02-07/fd49da85-03cc-495f-bff4-87742d2effa6.jpeg');
+    background-size: cover;
+    background-position: center;
   }
 
   .hero-inner {
