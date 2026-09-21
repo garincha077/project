@@ -34,21 +34,11 @@ export async function POST(request: Request) {
   ].filter(Boolean).join('\n')
 
   const apiUrl = `https://api.telegram.org/bot${token}`
-  const messageResponse = await fetch(`${apiUrl}/sendMessage`, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ chat_id: chatId, text }),
-  })
-
-  if (!messageResponse.ok) {
-    return NextResponse.json({ error: 'Не удалось передать обращение в Telegram.' }, { status: 502 })
-  }
-
   if (photo instanceof File && photo.size > 0) {
     const telegramPhoto = new FormData()
     telegramPhoto.append('chat_id', chatId)
     telegramPhoto.append('photo', photo, photo.name)
-    telegramPhoto.append('caption', `Фото к обращению: ${category}\n${address}`)
+    telegramPhoto.append('caption', text)
 
     const photoResponse = await fetch(`${apiUrl}/sendPhoto`, {
       method: 'POST',
@@ -56,9 +46,20 @@ export async function POST(request: Request) {
     })
 
     if (!photoResponse.ok) {
-      return NextResponse.json({ error: 'Текст отправлен, но фотографию передать не удалось.' }, { status: 502 })
+      return NextResponse.json({ error: 'Не удалось передать обращение и фотографию в Telegram.' }, { status: 502 })
+    }
+  } else {
+    const messageResponse = await fetch(`${apiUrl}/sendMessage`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ chat_id: chatId, text }),
+    })
+
+    if (!messageResponse.ok) {
+      return NextResponse.json({ error: 'Не удалось передать обращение в Telegram.' }, { status: 502 })
     }
   }
+
 
   return NextResponse.json({ ok: true })
 }
