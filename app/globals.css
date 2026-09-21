@@ -379,11 +379,42 @@ textarea {
   gap: 5px;
 }
 
-.upload-text strong {
+  .upload-text strong {
   font-size: 13px;
-}
+  }
 
-.upload-arrow {
+  .media-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+  }
+
+  .media-actions > span {
+  color: #6e7f92;
+  font-size: 12px;
+  }
+
+  .camera-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border: 1px solid #3978b7;
+  border-radius: 6px;
+  color: #245b91;
+  background: #edf4fb;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  }
+
+  .camera-button:hover {
+  background: #dcecfb;
+  }
+  
+  .upload-arrow {
   color: #3978b7;
 }
 

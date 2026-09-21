@@ -31,6 +31,7 @@ const categories = [
 
 export default function Page() {
   const fileInput = useRef<HTMLInputElement>(null)
+  const cameraInput = useRef<HTMLInputElement>(null)
   const [category, setCategory] = useState(categories[0].label)
   const [file, setFile] = useState<File | null>(null)
   const [submitted, setSubmitted] = useState(false)
@@ -39,7 +40,7 @@ export default function Page() {
   const [error, setError] = useState('')
 
   function selectFile(nextFile?: File) {
-    if (nextFile && nextFile.type.startsWith('image/')) setFile(nextFile)
+    if (nextFile && (nextFile.type.startsWith('image/') || nextFile.type.startsWith('video/'))) setFile(nextFile)
   }
 
   async function submitReport(event: React.FormEvent<HTMLFormElement>) {
@@ -110,7 +111,7 @@ export default function Page() {
                 <div className="field-group"><label htmlFor="address">Адрес происшествия</label><div className="input-wrap"><MapPin size={18} /><input id="address" name="address" placeholder="Например, проспект Бухар Жырау, 56" required /><button type="button" aria-label="Определить моё местоположение" title="Определить местоположение"><LocateFixed size={17} /></button></div><span className="field-hint">Укажите улицу, номер дома или ближайший ориентир</span></div>
               </div>
               <div className="field-group"><label htmlFor="description">Опишите ситуацию <span>(необязательно)</span></label><textarea id="description" name="description" rows={4} placeholder="Расскажите подробнее, что произошло..." /><div className="char-count">0 / 500</div></div>
-              <div className="field-group"><label>Фото или видео <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') fileInput.current?.click() }}><input ref={fileInput} name="media" type="file" accept="image/*,video/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon">{file.type.startsWith('video/') ? <Video size={22} /> : <FileImage size={22} />}</div><div className="upload-text"><strong>{file.name}</strong><span>{file.type.startsWith('video/') ? 'Видео добавлено' : 'Фото добавлено'} · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить файл"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фото или видео</strong><span>Перетащите файл сюда или нажмите для выбора · JPG, PNG, MP4 до 50 МБ</span></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
+              <div className="field-group"><label>Фото или видео <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') fileInput.current?.click() }}><input ref={fileInput} name="media" type="file" accept="image/*,video/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} /><input ref={cameraInput} type="file" accept="image/*" capture="environment" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon">{file.type.startsWith('video/') ? <Video size={22} /> : <FileImage size={22} />}</div><div className="upload-text"><strong>{file.name}</strong><span>{file.type.startsWith('video/') ? 'Видео добавлено' : 'Фото добавлено'} · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить файл"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фото или видео</strong><span>Выберите файл или сделайте снимок камерой · JPG, PNG, MP4 до 50 МБ</span><div className="media-actions"><button type="button" className="camera-button" onClick={(event) => { event.stopPropagation(); cameraInput.current?.click() }}><Video size={16} /> Сделать фото</button><span>или нажмите для выбора</span></div></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
               {error && <p className="form-error" role="alert">{error}</p>}
               <div className="form-footer"><p><ShieldCheck size={16} /> Отправляя обращение, вы соглашаетесь с <a href="#about">правилами сервиса</a></p><button className="submit-button" type="submit" disabled={sending}>{sending ? 'Отправляем…' : 'Отправить обращение'} {!sending && <ArrowRight size={18} />}</button></div>
             </form>
