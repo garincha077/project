@@ -34,14 +34,32 @@ export default function Page() {
   const [file, setFile] = useState<File | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [error, setError] = useState('')
 
   function selectFile(nextFile?: File) {
     if (nextFile && nextFile.type.startsWith('image/')) setFile(nextFile)
   }
 
-  function submitReport(event: React.FormEvent<HTMLFormElement>) {
+  async function submitReport(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    setSubmitted(true)
+    setSending(true)
+    setError('')
+
+    try {
+      const response = await fetch('/api/report', {
+        method: 'POST',
+        body: new FormData(event.currentTarget),
+      })
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.error || 'Не удалось отправить обращение')
+      setSubmitted(true)
+      setFile(null)
+    } catch (submissionError) {
+      setError(submissionError instanceof Error ? submissionError.message : 'Не удалось отправить обращение')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -87,12 +105,13 @@ export default function Page() {
           ) : (
             <form className="report-form" onSubmit={submitReport}>
               <div className="form-grid">
-                <div className="field-group category-field"><label htmlFor="category">Категория проблемы</label><div className="select-wrap"><select id="category" value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select><ChevronDown size={18} /></div></div>
-                <div className="field-group"><label htmlFor="address">Адрес происшествия</label><div className="input-wrap"><MapPin size={18} /><input id="address" placeholder="Например, проспект Бухар Жырау, 56" required /><button type="button" aria-label="Определить моё местоположение" title="Определить местоположение"><LocateFixed size={17} /></button></div><span className="field-hint">Укажите улицу, номер дома или ближайший ориентир</span></div>
+                <div className="field-group category-field"><label htmlFor="category">Категория проблемы</label><div className="select-wrap"><select id="category" name="category" value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select><ChevronDown size={18} /></div></div>
+                <div className="field-group"><label htmlFor="address">Адрес происшествия</label><div className="input-wrap"><MapPin size={18} /><input id="address" name="address" placeholder="Например, проспект Бухар Жырау, 56" required /><button type="button" aria-label="Определить моё местоположение" title="Определить местоположение"><LocateFixed size={17} /></button></div><span className="field-hint">Укажите улицу, номер дома или ближайший ориентир</span></div>
               </div>
-              <div className="field-group"><label htmlFor="description">Опишите ситуацию <span>(необязательно)</span></label><textarea id="description" rows={4} placeholder="Расскажите подробнее, что произошло..." /><div className="char-count">0 / 500</div></div>
-              <div className="field-group"><label>Фотография <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter') fileInput.current?.click() }}><input ref={fileInput} type="file" accept="image/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon"><FileImage size={22} /></div><div className="upload-text"><strong>{file.name}</strong><span>Фото добавлено · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить фото"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фотографию</strong><span>Перетащите файл сюда или нажмите для выбора · JPG, PNG до 10 МБ</span></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
-              <div className="form-footer"><p><ShieldCheck size={16} /> Отправляя обращение, вы соглашаетесь с <a href="#about">правилами сервиса</a></p><button className="submit-button" type="submit">Отправить обращение <ArrowRight size={18} /></button></div>
+              <div className="field-group"><label htmlFor="description">Опишите ситуацию <span>(необязательно)</span></label><textarea id="description" name="description" rows={4} placeholder="Расскажите подробнее, что произошло..." /><div className="char-count">0 / 500</div></div>
+              <div className="field-group"><label>Фотография <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter') fileInput.current?.click() }}><input ref={fileInput} name="photo" type="file" accept="image/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon"><FileImage size={22} /></div><div className="upload-text"><strong>{file.name}</strong><span>Фото добавлено · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить фото"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фотографию</strong><span>Перетащите файл сюда или нажмите для выбора · JPG, PNG до 10 МБ</span></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
+              {error && <p className="form-error" role="alert">{error}</p>}
+              <div className="form-footer"><p><ShieldCheck size={16} /> Отправляя обращение, вы соглашаетесь с <a href="#about">правилами сервиса</a></p><button className="submit-button" type="submit" disabled={sending}>{sending ? 'Отправляем…' : 'Отправить обращение'} {!sending && <ArrowRight size={18} />}</button></div>
             </form>
           )}
         </section>
