@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
 
-const MAX_IMAGE_BYTES = 10 * 1024 * 1024
+const MAX_MEDIA_BYTES = 50 * 1024 * 1024
 
 export async function POST(request: Request) {
   const token = process.env.TELEGRAM_BOT_TOKEN
@@ -16,14 +16,18 @@ export async function POST(request: Request) {
   const category = String(formData.get('category') ?? '').trim()
   const address = String(formData.get('address') ?? '').trim()
   const description = String(formData.get('description') ?? '').trim()
-  const photo = formData.get('photo')
+  const media = formData.get('media')
 
   if (!category || !address) {
     return NextResponse.json({ error: 'Укажите категорию и адрес.' }, { status: 400 })
   }
 
-  if (photo instanceof File && photo.size > MAX_IMAGE_BYTES) {
-    return NextResponse.json({ error: 'Размер фотографии не должен превышать 10 МБ.' }, { status: 400 })
+  if (media instanceof File && media.size > MAX_MEDIA_BYTES) {
+    return NextResponse.json({ error: 'Размер фото или видео не должен превышать 50 МБ.' }, { status: 400 })
+  }
+
+  if (media instanceof File && media.size > 0 && !media.type.startsWith('image/') && !media.type.startsWith('video/')) {
+    return NextResponse.json({ error: 'Можно отправить только изображение или видео.' }, { status: 400 })
   }
 
   const text = [
@@ -34,19 +38,19 @@ export async function POST(request: Request) {
   ].filter(Boolean).join('\n')
 
   const apiUrl = `https://api.telegram.org/bot${token}`
-  if (photo instanceof File && photo.size > 0) {
-    const telegramPhoto = new FormData()
-    telegramPhoto.append('chat_id', chatId)
-    telegramPhoto.append('photo', photo, photo.name)
-    telegramPhoto.append('caption', text)
+  if (media instanceof File && media.size > 0) {
+    const telegramMedia = new FormData()
+    telegramMedia.append('chat_id', chatId)
+    telegramMedia.append(media.type.startsWith('video/') ? 'video' : 'photo', media, media.name)
+    telegramMedia.append('caption', text)
 
-    const photoResponse = await fetch(`${apiUrl}/sendPhoto`, {
+    const mediaResponse = await fetch(`${apiUrl}/${media.type.startsWith('video/') ? 'sendVideo' : 'sendPhoto'}`, {
       method: 'POST',
-      body: telegramPhoto,
+      body: telegramMedia,
     })
 
-    if (!photoResponse.ok) {
-      return NextResponse.json({ error: 'Не удалось передать обращение и фотографию в Telegram.' }, { status: 502 })
+    if (!mediaResponse.ok) {
+      return NextResponse.json({ error: 'Не удалось передать обращение и медиафайл в Telegram.' }, { status: 502 })
     }
   } else {
     const messageResponse = await fetch(`${apiUrl}/sendMessage`, {
