@@ -672,6 +672,23 @@ footer {
   }
 }
 
+.account-link { color: #19385f; font-weight: 700; text-decoration: none; white-space: nowrap; }
+.account-section { max-width: 980px; margin: 0 auto; padding: 70px 24px 20px; }
+.account-form { display: flex; flex-wrap: wrap; gap: 12px; max-width: 760px; }
+.account-form input { flex: 1 1 220px; min-height: 48px; border: 0; border-radius: 14px; padding: 0 16px; background: #e7ebf1; box-shadow: inset 3px 3px 8px #cbd1d9, inset -3px -3px 8px #fff; color: #19385f; }
+.text-button { border: 0; background: none; color: #285b91; cursor: pointer; font-weight: 700; }
+.account-panel { padding: 24px; border-radius: 22px; background: #e7ebf1; box-shadow: 8px 8px 18px #cbd1d9, -8px -8px 18px #fff; }
+.account-panel > button { margin-right: 10px; }
+.reports-list { display: grid; gap: 12px; margin-top: 20px; }
+.report-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px; border-radius: 14px; background: #e7ebf1; box-shadow: inset 2px 2px 6px #cbd1d9, inset -2px -2px 6px #fff; }
+.report-row div { display: grid; gap: 5px; }
+.report-row span { color: #637085; }
+.status { padding: 7px 11px; border-radius: 99px; font-size: 12px; white-space: nowrap; }
+.status-new { background: #dbe9fa; color: #245b92; }
+.status-in_progress { background: #fff0c7; color: #85620b; }
+.status-resolved { background: #d9f0df; color: #287144; }
+@media (max-width: 680px) { .account-link { display: none; } .report-row { align-items: flex-start; flex-direction: column; } }
+
 @media (max-width: 380px) {
   .brand span {
     max-width: 150px;

@@ -1,6 +1,7 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { createClient } from '@/lib/supabase/client'
 import {
   AlertTriangle,
   ArrowRight,
@@ -48,6 +49,29 @@ export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
+  const [userEmail, setUserEmail] = useState('')
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login')
+  const [authEmail, setAuthEmail] = useState('')
+  const [authPassword, setAuthPassword] = useState('')
+  const [authMessage, setAuthMessage] = useState('')
+  const [reports, setReports] = useState<Array<{ id: string; category: string; address: string; status: string; created_at: string }>>([])
+  useEffect(() => {
+    createClient().auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? ''))
+  }, [])
+
+  async function handleAuth(event: React.FormEvent) {
+    event.preventDefault()
+    setAuthMessage('')
+    const supabase = createClient()
+    const result = authMode === 'login' ? await supabase.auth.signInWithPassword({ email: authEmail, password: authPassword }) : await supabase.auth.signUp({ email: authEmail, password: authPassword, options: { emailRedirectTo: `${window.location.origin}/auth/callback` } })
+    if (result.error) setAuthMessage('Проверьте email и пароль.')
+    else { setUserEmail(authEmail); setAuthMessage(authMode === 'signup' ? 'Проверьте почту для подтверждения.' : 'Вы вошли в кабинет.') }
+  }
+
+  async function loadReports() {
+    const { data } = await createClient().from('reports').select('id, category, address, status, created_at').order('created_at', { ascending: false })
+    setReports(data ?? [])
+  }
 
   function selectFile(nextFile?: File) {
     if (nextFile && (nextFile.type.startsWith('image/') || nextFile.type.startsWith('video/'))) setFile(nextFile)
@@ -91,6 +115,7 @@ export default function Page() {
             {menuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
           <a className="header-action" href="#report"><Siren size={17} /> Сообщить о проблеме</a>
+          <a className="account-link" href="#account">{userEmail ? 'Личный кабинет' : 'Войти'}</a>
         </div>
       </header>
 
@@ -104,6 +129,11 @@ export default function Page() {
             <div className="hero-note"><ShieldCheck size={16} /> Ваше сообщение будет направлено в городские службы</div>
           </div>
           <div className="hero-stamp" aria-hidden="true"><span>ВМЕСТЕ</span><strong>ДЛЯ ГОРОДА</strong><i /></div>
+        </section>
+
+        <section className="account-section" id="account">
+          <div className="section-heading"><div><span className="section-kicker">Мои обращения</span><h2>Личный кабинет</h2></div></div>
+          {!userEmail ? <form className="account-form" onSubmit={handleAuth}><input type="email" placeholder="Ваш email" value={authEmail} onChange={(event) => setAuthEmail(event.target.value)} required /><input type="password" placeholder="Пароль" value={authPassword} onChange={(event) => setAuthPassword(event.target.value)} minLength={6} required /><button className="submit-button" type="submit">{authMode === 'login' ? 'Войти' : 'Зарегистрироваться'} <ArrowRight size={18} /></button><button type="button" className="text-button" onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}>{authMode === 'login' ? 'Создать аккаунт' : 'У меня уже есть аккаунт'}</button>{authMessage && <p className="field-hint">{authMessage}</p>}</form> : <div className="account-panel"><p>Вы вошли как <strong>{userEmail}</strong></p><button className="outline-button" onClick={() => { createClient().auth.signOut(); setUserEmail(''); setReports([]) }}>Выйти</button><button className="outline-button" onClick={loadReports}>Показать мои обращения</button>{reports.length > 0 && <div className="reports-list">{reports.map((report) => <div className="report-row" key={report.id}><div><strong>{report.category}</strong><span>{report.address}</span></div><b className={`status status-${report.status}`}>{report.status === 'new' ? 'Новое' : report.status === 'in_progress' ? 'В обработке' : 'Обработано'}</b></div>)}</div>}</div>}
         </section>
 
         <section className="report-section" id="report">
