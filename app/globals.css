@@ -687,7 +687,46 @@ footer {
 .status-new { background: #dbe9fa; color: #245b92; }
 .status-in_progress { background: #fff0c7; color: #85620b; }
 .status-resolved { background: #d9f0df; color: #287144; }
-@media (max-width: 680px) { .account-link { display: none; } .report-row { align-items: flex-start; flex-direction: column; } }
+@media (max-width: 680px) {
+  .account-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: 0 12px;
+    border-radius: 12px;
+    background: #e7ebf1;
+    box-shadow: 4px 4px 8px #cbd1d9, -4px -4px 8px #ffffff;
+    font-size: 12px;
+  }
+
+  .report-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 380px) {
+  .topbar-inner {
+    gap: 7px;
+  }
+
+  .brand span {
+    max-width: 106px;
+    font-size: 11px;
+    line-height: 1.1;
+  }
+
+  .brand-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .account-link {
+    padding: 0 9px;
+    font-size: 11px;
+  }
+}
 
 /* Authentication and account pages */
 .auth-page, .account-page { min-height: 100vh; padding: 28px 20px; background: #e7ebef; color: #1d2a35; }
