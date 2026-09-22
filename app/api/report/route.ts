@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { createClient } from '@/lib/supabase/server'
 
 export const runtime = 'nodejs'
 
@@ -11,6 +12,10 @@ export async function POST(request: Request) {
   if (!token || !chatId) {
     return NextResponse.json({ error: 'Telegram не настроен на сервере.' }, { status: 503 })
   }
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) return NextResponse.json({ error: 'Войдите в личный кабинет перед отправкой обращения.' }, { status: 401 })
 
   const formData = await request.formData()
   const category = String(formData.get('category') ?? '').trim()
@@ -64,6 +69,14 @@ export async function POST(request: Request) {
     }
   }
 
+
+  const { error: insertError } = await supabase.from('reports').insert({
+    user_id: user.id,
+    category,
+    address,
+    description: description || null,
+  })
+  if (insertError) return NextResponse.json({ error: 'Обращение отправлено, но не удалось сохранить его в личном кабинете.' }, { status: 500 })
 
   return NextResponse.json({ ok: true })
 }
