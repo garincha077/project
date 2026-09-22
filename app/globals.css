@@ -689,6 +689,37 @@ footer {
 .status-resolved { background: #d9f0df; color: #287144; }
 @media (max-width: 680px) { .account-link { display: none; } .report-row { align-items: flex-start; flex-direction: column; } }
 
+/* Authentication and account pages */
+.auth-page, .account-page { min-height: 100vh; padding: 28px 20px; background: #e7ebef; color: #1d2a35; }
+.auth-page { display: flex; flex-direction: column; align-items: center; }
+.auth-back { display: inline-flex; align-items: center; gap: 8px; color: #53616d; text-decoration: none; font-size: 14px; }
+.auth-page > .auth-back { width: min(460px, 100%); margin-bottom: 22px; }
+.auth-card { width: min(460px, 100%); padding: 34px; border-radius: 28px; background: #e7ebef; box-shadow: 14px 14px 28px #c7cdd2, -14px -14px 28px #ffffff; text-align: center; }
+.auth-logo { width: 86px; height: 86px; object-fit: contain; border-radius: 50%; margin-bottom: 14px; }
+.auth-card h1, .account-title h1 { margin: 8px 0; font-size: clamp(28px, 5vw, 40px); color: #193e63; }
+.auth-lead { color: #64727d; line-height: 1.6; margin: 0 0 24px; }
+.auth-form { display: flex; flex-direction: column; gap: 16px; text-align: left; }
+.auth-form label { display: flex; flex-direction: column; gap: 7px; color: #42515d; font-weight: 700; font-size: 14px; }
+.auth-form input { border: 0; border-radius: 13px; padding: 14px 16px; background: #e7ebef; color: #1d2a35; box-shadow: inset 4px 4px 8px #cbd1d6, inset -4px -4px 8px #ffffff; outline: none; }
+.auth-form input:focus { box-shadow: inset 2px 2px 4px #cbd1d6, inset -2px -2px 4px #ffffff, 0 0 0 2px #e9b949; }
+.auth-message { color: #236b54; line-height: 1.5; font-size: 14px; }
+.auth-security { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 24px; color: #71808b; font-size: 13px; }
+.account-page { padding: 0; }
+.account-top { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px max(20px, calc((100% - 1080px) / 2)); background: #e7ebef; box-shadow: 0 5px 16px #cbd1d6; }
+.account-content { width: min(1080px, calc(100% - 40px)); margin: 40px auto; }
+.account-title { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin: 26px 0; }
+.account-title p { color: #71808b; margin: 8px 0 0; }
+.account-title .section-kicker { color: #c18b18; }
+.report-card { padding: 22px; border-radius: 20px; background: #e7ebef; box-shadow: 8px 8px 18px #c7cdd2, -8px -8px 18px #ffffff; }
+.report-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.report-card h2 { margin: 5px 0 0; color: #193e63; font-size: 20px; }
+.report-date { color: #7a8791; font-size: 13px; }
+.report-address, .report-card p { color: #5e6d78; line-height: 1.5; }
+.empty-account { margin-top: 30px; padding: 54px 24px; border-radius: 24px; text-align: center; color: #697780; box-shadow: inset 6px 6px 14px #c7cdd2, inset -6px -6px 14px #ffffff; }
+.empty-account h2 { color: #193e63; }
+.empty-account .submit-button { display: inline-flex; margin-top: 12px; text-decoration: none; }
+.account-section { display: none; }
+
 @media (max-width: 380px) {
   .brand span {
     max-width: 150px;

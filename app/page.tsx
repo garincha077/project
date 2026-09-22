@@ -115,7 +115,7 @@ export default function Page() {
             {menuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
           <a className="header-action" href="#report"><Siren size={17} /> Сообщить о проблеме</a>
-          <a className="account-link" href="#account">{userEmail ? 'Личный кабинет' : 'Войти'}</a>
+          <a className="account-link" href={userEmail ? '/account' : '/login'}>{userEmail ? 'Личный кабинет' : 'Войти'}</a>
         </div>
       </header>
 
