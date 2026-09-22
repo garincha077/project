@@ -35,6 +35,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Можно отправить только изображение или видео.' }, { status: 400 })
   }
 
+  let mediaUrl: string | null = null
+  let mediaType: string | null = null
+  if (media instanceof File && media.size > 0) {
+    const filePath = `${user.id}/${crypto.randomUUID()}-${media.name.replace(/[^a-zA-Z0-9._-]/g, '-')}`
+    const { error: uploadError } = await supabase.storage.from('reports-media').upload(filePath, media, { contentType: media.type, upsert: false })
+    if (uploadError) return NextResponse.json({ error: 'Не удалось сохранить фото или видео.' }, { status: 500 })
+    const { data: publicFile } = supabase.storage.from('reports-media').getPublicUrl(filePath)
+    mediaUrl = publicFile.publicUrl
+    mediaType = media.type
+  }
+
   const text = [
     'Новое обращение: Проблемы Караганды',
     `Категория: ${category}`,
@@ -75,6 +86,8 @@ export async function POST(request: Request) {
     category,
     address,
     description: description || null,
+    media_url: mediaUrl,
+    media_type: mediaType,
   })
   if (insertError) return NextResponse.json({ error: 'Обращение отправлено, но не удалось сохранить его в личном кабинете.' }, { status: 500 })
 
