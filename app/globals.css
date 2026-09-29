@@ -24,10 +24,80 @@ textarea {
   font: inherit;
 }
 
-.site-shell {
+  .site-shell {
   min-height: 100vh;
   background: #f5f7fa;
-}
+  }
+
+  .site-shell.dark-mode {
+  color: #e7edf5;
+  background: #111827;
+  }
+
+  .site-shell.dark-mode .report-section,
+  .site-shell.dark-mode .account-section,
+  .site-shell.dark-mode .how-section {
+  background: #111827;
+  }
+
+  .site-shell.dark-mode .report-form,
+  .site-shell.dark-mode .account-panel,
+  .site-shell.dark-mode .account-form,
+  .site-shell.dark-mode .success-card {
+  border-color: #334155;
+  background: #1f2937;
+  }
+
+  .site-shell.dark-mode h2,
+  .site-shell.dark-mode h3,
+  .site-shell.dark-mode label,
+  .site-shell.dark-mode .section-kicker,
+  .site-shell.dark-mode .step h3 {
+  color: #f8fafc;
+  }
+
+  .site-shell.dark-mode p,
+  .site-shell.dark-mode .field-hint,
+  .site-shell.dark-mode .step p {
+  color: #aebdce;
+  }
+
+  .site-shell.dark-mode input,
+  .site-shell.dark-mode select,
+  .site-shell.dark-mode textarea {
+  border-color: #475569;
+  color: #f8fafc;
+  background: #273449;
+  }
+
+  .site-shell.dark-mode .trust-strip,
+  .site-shell.dark-mode footer {
+  background: #0b1220;
+  }
+
+  .site-shell.dark-mode .theme-button {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.72);
+  }
+
+  .theme-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 9px;
+  color: #ffffff;
+  background: rgba(8, 29, 53, 0.32);
+  cursor: pointer;
+  }
+
+  .theme-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+  }
 
 .topbar {
   position: absolute;
