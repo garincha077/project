@@ -588,14 +588,27 @@ textarea {
   font-size: 17px;
 }
 
-.step p {
+  .step p {
   margin: 0;
   color: #6e7f92;
   font-size: 13px;
   line-height: 1.55;
-}
+  }
 
-.trust-strip {
+  .site-shell.dark-mode .step {
+  border-color: #3b82c4;
+  background: #1f2937;
+  }
+
+  .site-shell.dark-mode .step h3 {
+  color: #f8fafc;
+  }
+
+  .site-shell.dark-mode .step p {
+  color: #b8c7d9;
+  }
+
+  .trust-strip {
   display: flex;
   align-items: center;
   justify-content: center;
