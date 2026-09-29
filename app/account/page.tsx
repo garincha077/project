@@ -6,7 +6,7 @@ import { createClient } from '@/lib/supabase/client'
 
 type Report = { id: string; category: string; address: string; description: string | null; status: string; created_at: string; media_url: string | null; media_type: string | null }
 
-const statusNames: Record<string, string> = { new: 'Новое', in_progress: 'В обработке', resolved: 'Обработано' }
+const statusNames: Record<string, string> = { new: 'Новое', under_review: 'На рассмотрении', in_progress: 'В обработке', resolved: 'Сделано' }
 
 function ReportMedia({ report }: { report: Report }) {
   if (!report.media_url) return null
