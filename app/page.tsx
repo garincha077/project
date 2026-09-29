@@ -13,9 +13,8 @@ import {
   MapPin,
   Menu,
   MessageSquareText,
-  Moon,
+  Settings,
   ShieldCheck,
-  Sun,
   Siren,
   TrafficCone,
   Upload,
@@ -49,7 +48,9 @@ export default function Page() {
   const [file, setFile] = useState<File | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [settingsOpen, setSettingsOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
+  const [language, setLanguage] = useState<'ru' | 'en'>('ru')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [userEmail, setUserEmail] = useState('')
@@ -61,12 +62,24 @@ export default function Page() {
   useEffect(() => {
     createClient().auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? ''))
     setDarkMode(window.localStorage.getItem('city-service-theme') === 'dark')
+    setLanguage(window.localStorage.getItem('city-service-language') === 'en' ? 'en' : 'ru')
   }, [])
+
+  const copy = language === 'en' ? {
+    navHow: 'How it works', navAbout: 'About the service', navContacts: 'Contacts', report: 'Report a problem', account: userEmail ? 'Personal account' : 'Sign in', settings: 'Settings', settingsTitle: 'Settings', theme: 'Theme', dark: 'Dark', light: 'Light', languageLabel: 'Language', close: 'Close',
+  } : {
+    navHow: 'Как это работает', navAbout: 'О сервисе', navContacts: 'Контакты', report: 'Сообщить о проблеме', account: userEmail ? 'Личный кабинет' : 'Войти', settings: 'Настройки', settingsTitle: 'Настройки', theme: 'Тема', dark: 'Тёмная', light: 'Светлая', languageLabel: 'Язык', close: 'Закрыть',
+  }
 
   function toggleTheme() {
     const nextMode = !darkMode
     setDarkMode(nextMode)
     window.localStorage.setItem('city-service-theme', nextMode ? 'dark' : 'light')
+  }
+
+  function changeLanguage(nextLanguage: 'ru' | 'en') {
+    setLanguage(nextLanguage)
+    window.localStorage.setItem('city-service-language', nextLanguage)
   }
 
   async function handleAuth(event: React.FormEvent) {
@@ -117,20 +130,20 @@ export default function Page() {
             <span>Открытый <b>городской сервис</b></span>
           </a>
           <nav className={menuOpen ? 'nav-links is-open' : 'nav-links'} aria-label="Основная навигация">
-            <a href="#how">Как это работает</a>
-            <a href="#about">О сервисе</a>
-            <a href="#contacts">Контакты</a>
+            <a href="#how">{copy.navHow}</a>
+            <a href="#about">{copy.navAbout}</a>
+            <a href="#contacts">{copy.navContacts}</a>
           </nav>
           <button className="menu-button" onClick={() => setMenuOpen(!menuOpen)} aria-label="Открыть меню" aria-expanded={menuOpen}>
             {menuOpen ? <X size={21} /> : <Menu size={21} />}
           </button>
-          <a className="header-action" href="#report"><Siren size={17} /> Сообщить о проблеме</a>
-          <a className="account-link" href={userEmail ? '/account' : '/login'}>{userEmail ? 'Личный кабинет' : 'Войти'}</a>
-          <button className="theme-button" type="button" onClick={toggleTheme} aria-label={darkMode ? 'Включить светлую тему' : 'Включить тёмную тему'} title={darkMode ? 'Светлая тема' : 'Тёмная тема'}>
-            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
+          <a className="header-action" href="#report"><Siren size={17} /> {copy.report}</a>
+          <a className="account-link" href={userEmail ? '/account' : '/login'}>{copy.account}</a>
+          <button className="settings-button" type="button" onClick={() => setSettingsOpen(true)} aria-label={copy.settings} title={copy.settings}><Settings size={18} /> <span>{copy.settings}</span></button>
         </div>
       </header>
+
+      {settingsOpen && <div className="settings-backdrop" role="presentation" onClick={() => setSettingsOpen(false)}><section className="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" onClick={(event) => event.stopPropagation()}><div className="settings-header"><h2 id="settings-title">{copy.settingsTitle}</h2><button className="settings-close" type="button" onClick={() => setSettingsOpen(false)} aria-label={copy.close}>×</button></div><label className="settings-field">{copy.languageLabel}<select value={language} onChange={(event) => changeLanguage(event.target.value as 'ru' | 'en')}><option value="ru">Русский</option><option value="en">English</option></select></label><div className="settings-field"><span>{copy.theme}</span><div className="theme-options"><button className={!darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (darkMode) toggleTheme() }}>{copy.light}</button><button className={darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (!darkMode) toggleTheme() }}>{copy.dark}</button></div></div></section></div>}
 
       <main id="top">
         <section className="hero">
