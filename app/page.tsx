@@ -13,7 +13,9 @@ import {
   MapPin,
   Menu,
   MessageSquareText,
+  Moon,
   ShieldCheck,
+  Sun,
   Siren,
   TrafficCone,
   Upload,
@@ -47,6 +49,7 @@ export default function Page() {
   const [file, setFile] = useState<File | null>(null)
   const [submitted, setSubmitted] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [userEmail, setUserEmail] = useState('')
@@ -57,7 +60,14 @@ export default function Page() {
   const [reports, setReports] = useState<Array<{ id: string; category: string; address: string; status: string; created_at: string }>>([])
   useEffect(() => {
     createClient().auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? ''))
+    setDarkMode(window.localStorage.getItem('city-service-theme') === 'dark')
   }, [])
+
+  function toggleTheme() {
+    const nextMode = !darkMode
+    setDarkMode(nextMode)
+    window.localStorage.setItem('city-service-theme', nextMode ? 'dark' : 'light')
+  }
 
   async function handleAuth(event: React.FormEvent) {
     event.preventDefault()
@@ -99,7 +109,7 @@ export default function Page() {
   }
 
   return (
-    <div className="site-shell">
+      <div className={darkMode ? 'site-shell dark-mode' : 'site-shell'}>
       <header className="topbar">
         <div className="topbar-inner">
           <a href="#top" className="brand" aria-label="Открытый городской сервис — на главную">
@@ -116,6 +126,9 @@ export default function Page() {
           </button>
           <a className="header-action" href="#report"><Siren size={17} /> Сообщить о проблеме</a>
           <a className="account-link" href={userEmail ? '/account' : '/login'}>{userEmail ? 'Личный кабинет' : 'Войти'}</a>
+          <button className="theme-button" type="button" onClick={toggleTheme} aria-label={darkMode ? 'Включить светлую тему' : 'Включить тёмную тему'} title={darkMode ? 'Светлая тема' : 'Тёмная тема'}>
+            {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
         </div>
       </header>
 
