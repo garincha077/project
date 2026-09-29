@@ -5,6 +5,8 @@ export const runtime = 'nodejs'
 
 const MAX_MEDIA_BYTES = 50 * 1024 * 1024
 
+// Statuses are controlled by the Telegram admin route and read by users through RLS.
+
 export async function POST(request: Request) {
   const token = process.env.TELEGRAM_BOT_TOKEN
   const chatId = process.env.TELEGRAM_CHAT_ID
