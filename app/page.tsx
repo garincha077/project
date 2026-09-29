@@ -50,7 +50,7 @@ export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
-  const [language, setLanguage] = useState<'ru' | 'en'>('ru')
+  const [language, setLanguage] = useState<'ru' | 'en' | 'kk'>('ru')
   const [sending, setSending] = useState(false)
   const [error, setError] = useState('')
   const [userEmail, setUserEmail] = useState('')
@@ -62,13 +62,15 @@ export default function Page() {
   useEffect(() => {
     createClient().auth.getUser().then(({ data }) => setUserEmail(data.user?.email ?? ''))
     setDarkMode(window.localStorage.getItem('city-service-theme') === 'dark')
-    setLanguage(window.localStorage.getItem('city-service-language') === 'en' ? 'en' : 'ru')
+    setLanguage(window.localStorage.getItem('city-service-language') === 'en' ? 'en' : window.localStorage.getItem('city-service-language') === 'kk' ? 'kk' : 'ru')
   }, [])
 
   const copy = language === 'en' ? {
-    navHow: 'How it works', navAbout: 'About the service', navContacts: 'Contacts', report: 'Report a problem', account: userEmail ? 'Personal account' : 'Sign in', settings: 'Settings', settingsTitle: 'Settings', theme: 'Theme', dark: 'Dark', light: 'Light', languageLabel: 'Language', close: 'Close',
+    navHow: 'How it works', navAbout: 'About the service', navContacts: 'Contacts', report: 'Report a problem', account: userEmail ? 'Personal account' : 'Sign in', settings: 'Settings', settingsTitle: 'Settings', theme: 'Theme', dark: 'Dark', light: 'Light', languageLabel: 'Language', close: 'Close', heroEyebrow: 'City service for requests', heroTitle: 'Together for a better Karaganda', heroCopy: 'Have you noticed a problem in the city? Tell us — it only takes a couple of minutes.', heroButton: 'Report a problem', heroNote: 'Your message will be sent to city services', newReport: 'New request', what: 'What happened?', step: 'Step 1 of 1', category: 'Problem category', address: 'Incident address', addressHint: 'Enter a street, building number or nearby landmark', description: 'Describe the situation', optional: '(optional)', descriptionPlaceholder: 'Tell us more about what happened…', media: 'Photo or video', upload: 'Add a photo or video', submit: 'Submit request', submitting: 'Sending…', howKicker: 'Simple and clear', howTitle: 'How it works', thanks: 'Thank you for your request', another: 'Send another', languageRu: 'Russian', languageEn: 'English', languageKk: 'Kazakh', languageValue: 'en' as const,
+  } : language === 'kk' ? {
+    navHow: 'Қалай жұмыс істейді', navAbout: 'Сервис туралы', navContacts: 'Байланыс', report: 'Мәселе туралы хабарлау', account: userEmail ? 'Жеке кабинет' : 'Кіру', settings: 'Баптаулар', settingsTitle: 'Баптаулар', theme: 'Тақырып', dark: 'Қараңғы', light: 'Жарық', languageLabel: 'Тіл', close: 'Жабу', heroEyebrow: 'Қалалық өтініштер сервисі', heroTitle: 'Қарағандыны бірге жақсартамыз', heroCopy: 'Қалада мәселе көрдіңіз бе? Бізге хабарлаңыз — бұл бірнеше минут қана алады.', heroButton: 'Мәселе туралы хабарлау', heroNote: 'Хабарыңыз қалалық қызметтерге жіберіледі', newReport: 'Жаңа өтініш', what: 'Не болды?', step: '1-қадам / 1', category: 'Мәселе санаты', address: 'Оқиға мекенжайы', addressHint: 'Көше, үй нөмірі немесе жақын жердегі нысанды жазыңыз', description: 'Жағдайды сипаттаңыз', optional: '(міндетті емес)', descriptionPlaceholder: 'Не болғанын толығырақ жазыңыз…', media: 'Фото немесе бейне', upload: 'Фото немесе бейне қосыңыз', submit: 'Өтініш жіберу', submitting: 'Жіберілуде…', howKicker: 'Қарапайым әрі түсінікті', howTitle: 'Бұл қалай жұмыс істейді', thanks: 'Өтінішіңізге рақмет', another: 'Тағы жіберу', languageRu: 'Орысша', languageEn: 'Ағылшынша', languageKk: 'Қазақша', languageValue: 'kk' as const,
   } : {
-    navHow: 'Как это работает', navAbout: 'О сервисе', navContacts: 'Контакты', report: 'Сообщить о проблеме', account: userEmail ? 'Личный кабинет' : 'Войти', settings: 'Настройки', settingsTitle: 'Настройки', theme: 'Тема', dark: 'Тёмная', light: 'Светлая', languageLabel: 'Язык', close: 'Закрыть',
+    navHow: 'Как это работает', navAbout: 'О сервисе', navContacts: 'Контакты', report: 'Сообщить о проблеме', account: userEmail ? 'Личный кабинет' : 'Войти', settings: 'Настройки', settingsTitle: 'Настройки', theme: 'Тема', dark: 'Тёмная', light: 'Светлая', languageLabel: 'Язык', close: 'Закрыть', heroEyebrow: 'Городской сервис обращений', heroTitle: 'Вместе сделаем Караганду лучше', heroCopy: 'Увидели проблему в городе? Сообщите нам — это займёт всего пару минут.', heroButton: 'Сообщить о проблеме', heroNote: 'Ваше сообщение будет направлено в городские службы', newReport: 'Новое обращение', what: 'Что случилось?', step: 'Шаг 1 из 1', category: 'Категория проблемы', address: 'Адрес происшествия', addressHint: 'Укажите улицу, номер дома или ближайший ориентир', description: 'Опишите ситуацию', optional: '(необязательно)', descriptionPlaceholder: 'Расскажите подробнее, что произошло…', media: 'Фото или видео', upload: 'Добавьте фото или видео', submit: 'Отправить обращение', submitting: 'Отправляем…', howKicker: 'Просто и понятно', howTitle: 'Как это работает', thanks: 'Спасибо за обращение', another: 'Отправить ещё одно', languageRu: 'Русский', languageEn: 'English', languageKk: 'Қазақша', languageValue: 'ru' as const,
   }
 
   function toggleTheme() {
@@ -77,7 +79,7 @@ export default function Page() {
     window.localStorage.setItem('city-service-theme', nextMode ? 'dark' : 'light')
   }
 
-  function changeLanguage(nextLanguage: 'ru' | 'en') {
+  function changeLanguage(nextLanguage: 'ru' | 'en' | 'kk') {
     setLanguage(nextLanguage)
     window.localStorage.setItem('city-service-language', nextLanguage)
   }
@@ -143,16 +145,16 @@ export default function Page() {
         </div>
       </header>
 
-      {settingsOpen && <div className="settings-backdrop" role="presentation" onClick={() => setSettingsOpen(false)}><section className="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" onClick={(event) => event.stopPropagation()}><div className="settings-header"><h2 id="settings-title">{copy.settingsTitle}</h2><button className="settings-close" type="button" onClick={() => setSettingsOpen(false)} aria-label={copy.close}>×</button></div><label className="settings-field">{copy.languageLabel}<select value={language} onChange={(event) => changeLanguage(event.target.value as 'ru' | 'en')}><option value="ru">Русский</option><option value="en">English</option></select></label><div className="settings-field"><span>{copy.theme}</span><div className="theme-options"><button className={!darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (darkMode) toggleTheme() }}>{copy.light}</button><button className={darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (!darkMode) toggleTheme() }}>{copy.dark}</button></div></div></section></div>}
+      {settingsOpen && <div className="settings-backdrop" role="presentation" onClick={() => setSettingsOpen(false)}><section className="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title" onClick={(event) => event.stopPropagation()}><div className="settings-header"><h2 id="settings-title">{copy.settingsTitle}</h2><button className="settings-close" type="button" onClick={() => setSettingsOpen(false)} aria-label={copy.close}>×</button></div><label className="settings-field">{copy.languageLabel}<select value={language} onChange={(event) => changeLanguage(event.target.value as 'ru' | 'en' | 'kk')}><option value="ru">{copy.languageRu}</option><option value="en">{copy.languageEn}</option><option value="kk">{copy.languageKk}</option></select></label><div className="settings-field"><span>{copy.theme}</span><div className="theme-options"><button className={!darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (darkMode) toggleTheme() }}>{copy.light}</button><button className={darkMode ? 'theme-option active' : 'theme-option'} type="button" onClick={() => { if (!darkMode) toggleTheme() }}>{copy.dark}</button></div></div></section></div>}
 
       <main id="top">
         <section className="hero">
           <div className="hero-inner">
-            <div className="eyebrow"><span className="eyebrow-dot" /> Городской сервис обращений</div>
-            <h1>Помогаем сделать<br /><em>Караганду лучше</em></h1>
-            <p className="hero-copy">Увидели проблему в городе? Сообщите нам —<br className="desktop-break" /> это займёт всего пару минут.</p>
-            <a className="hero-button" href="#report">Сообщить о проблеме <ArrowRight size={19} /></a>
-            <div className="hero-note"><ShieldCheck size={16} /> Ваше сообщение будет направлено в городские службы</div>
+            <div className="eyebrow"><span className="eyebrow-dot" /> {copy.heroEyebrow}</div>
+            <h1>{copy.heroTitle}</h1>
+            <p className="hero-copy">{copy.heroCopy}</p>
+            <a className="hero-button" href="#report">{copy.heroButton} <ArrowRight size={19} /></a>
+            <div className="hero-note"><ShieldCheck size={16} /> {copy.heroNote}</div>
           </div>
           <div className="hero-stamp" aria-hidden="true"><span>ВМЕСТЕ</span><strong>ДЛЯ ГОРОДА</strong><i /></div>
         </section>
@@ -164,8 +166,8 @@ export default function Page() {
 
         <section className="report-section" id="report">
           <div className="section-heading">
-            <div><span className="section-kicker">Новое обращение</span><h2>Что случилось?</h2></div>
-            <span className="step-count">Шаг 1 из 1</span>
+            <div><span className="section-kicker">{copy.newReport}</span><h2>{copy.what}</h2></div>
+            <span className="step-count">{copy.step}</span>
           </div>
 
           {submitted ? (
@@ -173,18 +175,18 @@ export default function Page() {
           ) : (
             <form className="report-form" onSubmit={submitReport}>
               <div className="form-grid">
-                <div className="field-group category-field"><label htmlFor="category">Категория проблемы</label><div className="select-wrap"><select id="category" name="category" value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select><ChevronDown size={18} /></div></div>
-                <div className="field-group"><label htmlFor="address">Адрес происшествия</label><div className="input-wrap"><MapPin size={18} /><input id="address" name="address" placeholder="Например, проспект Бухар Жырау, 56" required /><button type="button" aria-label="Определить моё местоположение" title="Определить местоположение"><LocateFixed size={17} /></button></div><span className="field-hint">Укажите улицу, номер дома или ближайший ориентир</span></div>
+                <div className="field-group category-field"><label htmlFor="category">{copy.category}</label><div className="select-wrap"><select id="category" name="category" value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((item) => <option key={item.label}>{item.label}</option>)}</select><ChevronDown size={18} /></div></div>
+                <div className="field-group"><label htmlFor="address">{copy.address}</label><div className="input-wrap"><MapPin size={18} /><input id="address" name="address" placeholder="Например, проспект Бухар Жырау, 56" required /><button type="button" aria-label="Определить моё местоположение" title="Определить местоположение"><LocateFixed size={17} /></button></div><span className="field-hint">{copy.addressHint}</span></div>
               </div>
-              <div className="field-group"><label htmlFor="description">Опишите ситуацию <span>(необязательно)</span></label><textarea id="description" name="description" rows={4} placeholder="Расскажите подробнее, что произошло..." /><div className="char-count">0 / 500</div></div>
-              <div className="field-group"><label>Фото или видео <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') fileInput.current?.click() }}><input ref={fileInput} name="media" type="file" accept="image/*,video/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} /><input ref={cameraInput} type="file" accept="image/*" capture="environment" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon">{file.type.startsWith('video/') ? <Video size={22} /> : <FileImage size={22} />}</div><div className="upload-text"><strong>{file.name}</strong><span>{file.type.startsWith('video/') ? 'Видео добавлено' : 'Фото добавлено'} · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить файл"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фото или видео</strong><span>Выб��рите файл или сделайте снимок камерой · JPG, PNG, MP4 до 50 МБ</span><div className="media-actions"><button type="button" className="camera-button" onClick={(event) => { event.stopPropagation(); cameraInput.current?.click() }}><Video size={16} /> Сделать фото</button><span>или нажмите для выбора</span></div></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
+              <div className="field-group"><label htmlFor="description">{copy.description} <span>(необязательно)</span></label><textarea id="description" name="description" rows={4} placeholder="Расскажите подробнее, что произошло..." /><div className="char-count">0 / 500</div></div>
+              <div className="field-group"><label>{copy.media} <span>(необязательно)</span></label><div className={file ? 'upload-box has-file' : 'upload-box'} onClick={() => fileInput.current?.click()} onDragOver={(event) => event.preventDefault()} onDrop={(event) => { event.preventDefault(); selectFile(event.dataTransfer.files[0]) }} role="button" tabIndex={0} onKeyDown={(event) => { if (event.key === 'Enter' || event.key === ' ') fileInput.current?.click() }}><input ref={fileInput} name="media" type="file" accept="image/*,video/*" hidden onChange={(event) => selectFile(event.target.files?.[0])} /><input ref={cameraInput} type="file" accept="image/*" capture="environment" hidden onChange={(event) => selectFile(event.target.files?.[0])} />{file ? <><div className="file-icon">{file.type.startsWith('video/') ? <Video size={22} /> : <FileImage size={22} />}</div><div className="upload-text"><strong>{file.name}</strong><span>{file.type.startsWith('video/') ? 'Видео добавлено' : 'Фото добавлено'} · нажмите, чтобы заменить</span></div><button type="button" className="remove-file" onClick={(event) => { event.stopPropagation(); setFile(null) }} aria-label="Удалить файл"><X size={17} /></button></> : <><div className="upload-icon"><Upload size={21} /></div><div className="upload-text"><strong>Добавьте фото или видео</strong><span>Выб��рите файл или сделайте снимок камерой · JPG, PNG, MP4 до 50 МБ</span><div className="media-actions"><button type="button" className="camera-button" onClick={(event) => { event.stopPropagation(); cameraInput.current?.click() }}><Video size={16} /> Сделать фото</button><span>или нажмите для выбора</span></div></div><ArrowRight className="upload-arrow" size={18} /></>}</div></div>
               {error && <p className="form-error" role="alert">{error}</p>}
-              <div className="form-footer"><p><ShieldCheck size={16} /> Отправляя обращение, вы соглашаетесь с <a href="#about">правилами сервиса</a></p><button className="submit-button" type="submit" disabled={sending}>{sending ? 'Отправляем…' : 'Отправить обращение'} {!sending && <ArrowRight size={18} />}</button></div>
+              <div className="form-footer"><p><ShieldCheck size={16} /> Отправляя обращение, вы соглашаетесь с <a href="#about">правилами сервиса</a></p><button className="submit-button" type="submit" disabled={sending}>{sending ? copy.submitting : copy.submit} {!sending && <ArrowRight size={18} />}</button></div>
             </form>
           )}
         </section>
 
-        <section className="how-section" id="how"><div className="section-heading compact"><div><span className="section-kicker">Просто и понятно</span><h2>Как это работает</h2></div></div><div className="steps"><div className="step"><span>01</span><div><h3>Сообщите о проблеме</h3><p>Опишите ситуацию, укажите адрес и добавьте фото.</p></div></div><div className="step"><span>02</span><div><h3>Мы передадим обращение</h3><p>Информация поступит в нужную городскую службу.</p></div></div><div className="step"><span>03</span><div><h3>Город станет лучше</h3><p>Специалисты рассмотрят обращение и примут меры.</p></div></div></div></section>
+        <section className="how-section" id="how"><div className="section-heading compact"><div><span className="section-kicker">{copy.howKicker}</span><h2>{copy.howTitle}</h2></div></div><div className="steps"><div className="step"><span>01</span><div><h3>Сообщите о проблеме</h3><p>{copy.description}, укажите адрес и добавьте фото.</p></div></div><div className="step"><span>02</span><div><h3>Мы передадим обращение</h3><p>Информация поступит в нужную городскую службу.</p></div></div><div className="step"><span>03</span><div><h3>Город станет лучше</h3><p>Специалисты рассмотрят обращение и примут меры.</p></div></div></div></section>
         <section className="trust-strip" id="about"><div><ShieldCheck size={21} /><strong>Открытый городской сервис</strong><span>Сообщения помогают находить и устранять проблемы в Караганде.</span></div><div className="trust-contact" id="contacts"><CircleHelp size={20} /><a href="mailto:help@karaganda.kz">Есть вопрос? Напишите нам</a></div></section>
       </main>
       <footer><span>© 2026 Открытый городской сервис</span><span>Сделано для Караганды</span></footer>
